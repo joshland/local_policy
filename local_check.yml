@@ -9,13 +9,18 @@
       path: "/etc/ssh/sshd_config"
       line: "PermitRootLogin prohibit-password"
       state: present
-      #notify:
-      #  - restart sshd
+    register: enable_sshd
 
   - name: ensure PermitRootLogin is not activated
     ansible.builtin.lineinfile:
       path: "/etc/ssh/sshd_config"
       line: "PermitRootLogin yes"
       state: absent
-      #notify:
-      #  - restart sshd
+    register: disable_root
+
+  - name: restart sshd
+    service:
+      name: sshd
+      state: restarted
+    when: enable_sshd.changed or disable_root.changed
+

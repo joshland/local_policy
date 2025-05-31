@@ -20,6 +20,7 @@ fedora:
   - emacs-nox
   - git
   - dnf-automatic
+  - tailscale
 
 debian:
   - emacs-nox

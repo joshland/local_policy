@@ -24,3 +24,47 @@
       state: restarted
     when: enable_sshd.changed or disable_root.changed
 
+  - name: Install common packages
+    yum:
+      name: "{{ packages }}"
+      state: present
+
+  - name: Install common Redhat packages
+    yum:
+      name: "{{ redhat }}"
+      state: present
+    when: (ansible_os_family == "RedHat" and ansible_distribution_major_version == "7")
+
+  - name: Install common Fedora packages
+    yum:
+      name: "{{ fedora }}"
+      state: present
+    when: (ansible_distribution == "Fedora")
+
+  - name: Install DNF Automatic
+    yum:
+      name: dnf-automatic
+      state: present
+
+  - name: Write DNF Automatic Updates
+    template:
+      src: automatic.conf.j2
+      dest: /etc/dnf/automatic.conf
+      mode: '0644'
+      owner: root
+      group: root
+      seuser: system_u
+      serole: object_r
+      setype: etc_t
+    when: dnf_automatic
+    tags:
+      - configuration
+
+  - name: Enable Timed Update
+    systemd:
+      name: dnf-automatic.timer
+      state: started
+      enabled: yes
+    when: dnf_automatic
+    tags:
+      - configuration

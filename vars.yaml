@@ -1,0 +1,34 @@
+---
+# Variables for this exercise
+packages:
+  - lsscsi
+  - hdparm
+  - tmux
+  - virt-what
+  - git
+  - neovim
+
+redhat:
+  - augeas
+  - vim-enhanced
+  - emacs-nox
+  - git
+
+fedora:
+  - augeas
+  - vim-enhanced
+  - emacs-nox
+  - git
+
+debian:
+  - emacs-nox
+  - vim-nox
+
+dnf_automatic: true
+
+## "yes" or "no"
+dnf_apply_updates: yes
+
+dnf_email_from: root@example.com
+dnf_email_to: root
+dnf_email_host: localhost

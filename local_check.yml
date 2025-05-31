@@ -72,6 +72,6 @@
   - name: enable and start tailscale
     service:
       name: tailscale
-      stat: started
+      state: started
       enabled: yes
 

@@ -19,6 +19,7 @@ fedora:
   - vim-enhanced
   - emacs-nox
   - git
+  - dnf-automatic
 
 debian:
   - emacs-nox

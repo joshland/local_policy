@@ -1,0 +1,42 @@
+# /etc/dhcp/dhcpd.conf template for desktop ({{ansible_hostname}})
+# module::common
+# Created by Ansible
+#### Auto-generated config file: do not edit. ####
+#agentaddress 127.0.0.1
+agentxperms 777 777 daemon wheel
+agentxsocket /var/agentx/master
+createuser _snmptrapusernameX
+ifmib_max_num_ifaces 500
+iquerysecname _snmptrapusernameX
+master agentx
+monitor -r 60 -o laNames -o laErrMessage "laTable" laErrorFlag != 0
+{% set read_only = snmp.readonly | default({}) %}
+{% for community, values in snmp.readonly.items() %}
+{% for address in values.access|default([]) %}
+rocommunity {{ community }} {{ address }}  
+{% endfor %}
+{% endfor %}
+rouser _snmptrapusernameX
+syscontact {{ snmp_local.contact | default(snmp.contact) }}
+syslocation {{ snmp_local.location | default(snmp.location) }}
+{% if domain_name is defined %}
+sysname  {{ ansible_hostname }}.{{ domain_name }}
+{% else %}
+sysname  {{ ansible_fqdn }}
+{% endif %}
+sysobjectid 1.3.6.1.4.1.40310
+sysservices 72
+smuxpeer .1.3.6.1.4.1.674.10892.1
+
+view systemview included .1.3.6.1.2.1.1
+view systemview included .1.3.6.1.2.1.25.1.1
+
+#Distro Detection
+extend .1.3.6.1.4.1.2021.7890.1 distro /usr/local/bin/distro
+
+#Hardware Detection (uncomment to enable)
+extend .1.3.6.1.4.1.2021.7890.2 hardware '/bin/cat /sys/devices/virtual/dmi/id/product_name'
+extend .1.3.6.1.4.1.2021.7890.3 manufacturer '/bin/cat /sys/devices/virtual/dmi/id/sys_vendor'
+extend .1.3.6.1.4.1.2021.7890.4 serial '/bin/cat /sys/devices/virtual/dmi/id/product_serial'
+
+dontLogTCPWrappersConnects yes

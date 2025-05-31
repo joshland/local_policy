@@ -1,0 +1,21 @@
+# /etc/dnf/automatic.conf template for server ({{ansible_hostname}})
+# module::common
+# Created by Ansible
+#### Auto-generated config file: do not edit. ####
+[commands]
+upgrade_type = default
+random_sleep = 0
+download_updates = yes
+apply_updates = {{ dnf_apply_updates }}
+[emitters]
+emit_via = stdio
+[email]
+email_from = {{ dnf_email_from }}
+email_to = {{ dnf_email_to }}
+email_host = {{ dnf_email_host }}
+[command]
+[command_email]
+email_from = {{ dnf_email_from }}
+email_to = {{ dnf_email_to }}
+[base]
+debuglevel = 1

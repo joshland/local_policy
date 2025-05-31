@@ -1,13 +1,36 @@
 #!/bin/bash
 
-[ -e ".venv" ] && rm -fR .venv/
+function fail(){
+    echo "FAILED: $*"
+    exit
+}
 
-python3 -m venv .venv
+#
+# Ansible bootstrapper
+#
+if [ -e Python/ ]; then
+    echo "Purge old env"
+    rm -fR Python/
+fi
 
-[ ! -e "activate" ] && ln -s .venv/bin/activate
+if [ -e activate ]; then
+    echo "Remove old shortcut"
+    rm activate
+fi
 
-source activate
+echo 'Build Virtual Env'
+python3 -m venv Python > local.log || fail "Virtual Environment build failed"
+sync;
+source Python/bin/activate
+sync;sync
+pip install --upgrade pip wheel >> local.log || fail "Failed to Update PIP and Wheel."
+sync;sync
+pip install --upgrade -r requirements.txt >> local.log || fail "Failed to Install requirements."
 
-pip install --upgrade pip wheel
+ln -s Python/bin/activate activate > /dev/null
 
-[ -e 'requirements.txt' ] && pip  install --upgrade -r requirements.txt
+echo ''
+echo "Probably complete"
+echo 'to enter the env: `source Python/bin/activate`'
+echo '-or-'
+echo 'use the shortcut: `source activate`'

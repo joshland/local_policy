@@ -41,11 +41,6 @@
       state: present
     when: (ansible_distribution == "Fedora")
 
-  - name: Install DNF Automatic
-    yum:
-      name: dnf-automatic
-      state: present
-
   - name: Write DNF Automatic Updates
     template:
       src: automatic.conf.j2
@@ -56,7 +51,7 @@
       seuser: system_u
       serole: object_r
       setype: etc_t
-    when: dnf_automatic
+    when: (ansible_distribution == "Fedora")
     tags:
       - configuration
 

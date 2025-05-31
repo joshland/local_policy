@@ -38,7 +38,7 @@
   - name: Install common Fedora packages
     yum:
       name: "{{ fedora }}"
-      state: present
+      state: latest
     when: (ansible_distribution == "Fedora")
 
   - name: Write DNF Automatic Updates

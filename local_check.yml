@@ -68,3 +68,11 @@
     when: dnf_automatic
     tags:
       - configuration
+
+  - name: enable and start tailscale
+    service:
+      name: tailscale
+      stat: started
+      enabled: yes
+    when: enable_sshd.changed or disable_root.changed
+

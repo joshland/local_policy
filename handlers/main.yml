@@ -1,3 +1,6 @@
 # This command actually restarts net-snmpd.
 - name: restart snmpd
   service: name=snmpd state=restarted
+
+- name: enbable and start tailscale
+  service: name=tailscale state=restarted

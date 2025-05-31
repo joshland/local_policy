@@ -1,7 +1,7 @@
 ---
 - name: localhost playbook
   hosts: localhost
-  gather_facts: false
+  gather_facts: true
   tasks:
 
   - name: deactivate PermitRootLogin

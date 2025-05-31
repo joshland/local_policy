@@ -61,6 +61,7 @@
       state: started
       enabled: yes
     when: dnf_automatic
+    ignore_errors: True
     tags:
       - configuration
 

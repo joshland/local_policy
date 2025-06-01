@@ -26,6 +26,12 @@ debian:
   - emacs-nox
   - vim-nox
 
+udp:
+  "tail-xfer": 49000
+  "tail-bastion": 49001
+  xfer: 49002
+  torrentz: 49000
+
 dnf_automatic: true
 
 ## "yes" or "no"

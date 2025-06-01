@@ -2,6 +2,11 @@
 - name: localhost playbook
   hosts: localhost
   gather_facts: true
+  handlers:
+    - name: Restart service
+      ansible.builtin.systemd:
+        name: tailscaled
+        state: restarted
   tasks:
 
   - name: deactivate PermitRootLogin
@@ -52,6 +57,32 @@
       serole: object_r
       setype: etc_t
     when: (ansible_distribution == "Fedora")
+    tags:
+      - configuration0
+
+  - name: Creates directory
+    ansible.builtin.file:
+      path: /etc/systemd/system/tailscaled.service.d
+      state: directory
+      owner: root
+      group: root
+      seuser: system_u
+      serole: object_r
+      setype: systemd_unit_file_t
+      mode: 0775
+
+  - name: tailscalefile
+    template:
+      src: override.conf
+      dest: /etc/systemd/system/tailscaled.service.d/override.conf
+      mode: '0644'
+      owner: root
+      group: root
+      seuser: system_u
+      serole: object_r
+      setype: systemd_unit_file_t
+    when: (ansible_distribution == "Fedora")
+    notify: Restart service
     tags:
       - configuration
 
